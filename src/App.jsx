@@ -21,13 +21,16 @@ function App() {
   };
 
   const convert = () => {
-    const rate = currencyInfo ? currencyInfo[to] : null;
-    if (rate) {
-      setConvertedAmount(amount * rate);
-    } else {
-      console.error("Conversion rate not found");
+    if (!currencyInfo || !currencyInfo[to]) {
+        console.error("Conversion rate not found for", to);
+        return;
     }
-  };
+
+    const rate = currencyInfo[to]; // Corrected data extraction
+    setConvertedAmount(amount * rate);
+    console.log(`Converted ${amount} ${from} to ${convertedAmount} ${to} at rate ${rate}`);
+};
+
 
   return (
   

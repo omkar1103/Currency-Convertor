@@ -14,18 +14,23 @@ function useCurrencyInfo(currency) {
                     throw new Error(`Error fetching data: ${response.statusText}`);
                 }
                 const result = await response.json();
-                setData(result.data);  // Assuming the API returns conversion rates in 'data'
-                console.log("Fetched data:", result.data);
+                // Extract only the "value" property of each currency
+                const formattedData = Object.fromEntries(
+                    Object.entries(result.data).map(([key, val]) => [key, val.value])
+                );
+                setData(formattedData);
+                console.log("Fetched data:", formattedData);
             } catch (err) {
                 setError(err.message);
                 console.error("Failed to fetch data:", err);
             }
         };
-
+    
         if (currency) {
             fetchCurrencyData();
         }
     }, [currency]);
+    
 
     if (error) {
         console.error("Error:", error);
